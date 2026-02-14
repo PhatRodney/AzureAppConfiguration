@@ -1,0 +1,58 @@
+<div class="connection-setup-container">
+  <div class="setup-card">
+    <div class="header">
+      <h1>Azure App Configuration Setup</h1>
+      <p>Connect to your Azure App Configuration service</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <div class="form-group">
+      <label for="connectionString">Connection String</label>
+      <div class="password-input-wrapper">
+        <input 
+          [type]="showConnectionString ? 'text' : 'password'"
+          id="connectionString" 
+          [(ngModel)]="connectionString" 
+          placeholder="Endpoint=https://...;Id=...;Secret=..."
+          class="form-control"
+          (keyup.enter)="connect()"
+        />
+        <button 
+          type="button" 
+          class="toggle-visibility-btn"
+          (click)="toggleShowConnectionString()"
+          [title]="showConnectionString ? 'Hide' : 'Show'"
+        >
+          {{ showConnectionString ? '👁️' : '👁️‍🗨️' }}
+        </button>
+      </div>
+      <small class="help-text">
+        Get your connection string from Azure Portal → App Configuration → Access Keys
+      </small>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" (click)="connect()">
+        <span class="icon">🔗</span> Connect
+      </button>
+    </div>
+
+    <div class="info-section">
+      <h3>How to get your connection string:</h3>
+      <ol>
+        <li>Go to Azure Portal</li>
+        <li>Navigate to your App Configuration resource</li>
+        <li>Select "Access Keys" from the left menu</li>
+        <li>Copy the "Connection string" (either Primary or Secondary)</li>
+      </ol>
+
+      <div class="warning-box">
+        <strong>⚠️ Security Note:</strong> Connection strings are stored only in memory for this session. 
+        They are not persisted to disk or browser storage for security reasons.
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="config-editor-container">
+  <div class="header">
+    <h1>{{ isEditMode ? 'Edit Configuration' : 'Create Configuration' }}</h1>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="success" class="success-message">
+    {{ success }}
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    {{ isEditMode ? 'Loading configuration...' : 'Saving configuration...' }}
+  </div>
+
+  <div *ngIf="!loading" class="editor-form">
+    <div class="form-group">
+      <label for="configKey">Key *</label>
+      <input 
+        type="text" 
+        id="configKey" 
+        [(ngModel)]="configKey" 
+        [disabled]="isEditMode"
+        placeholder="e.g., MyApp:Settings:ApiEndpoint"
+        class="form-control"
+      />
+      <small *ngIf="isEditMode" class="help-text">Key cannot be changed in edit mode</small>
+    </div>
+
+    <div class="form-group">
+      <label for="configLabel">Label (Optional)</label>
+      <input 
+        type="text" 
+        id="configLabel" 
+        [(ngModel)]="configLabel" 
+        placeholder="e.g., Production, Development"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="configContentType">Content Type (Optional)</label>
+      <input 
+        type="text" 
+        id="configContentType" 
+        [(ngModel)]="configContentType" 
+        placeholder="e.g., application/json"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="configValue">
+        Value *
+        <button 
+          *ngIf="isValidJson" 
+          type="button" 
+          class="btn btn-sm btn-secondary format-btn" 
+          (click)="formatJson()"
+        >
+          Format JSON
+        </button>
+      </label>
+      <textarea 
+        id="configValue" 
+        [(ngModel)]="configValue" 
+        (ngModelChange)="onValueChange()"
+        placeholder="Enter configuration value"
+        class="form-control value-textarea"
+        rows="10"
+      ></textarea>
+      <small *ngIf="isValidJson" class="help-text success-text">✓ Valid JSON</small>
+      <small *ngIf="!isValidJson && configValue.trim()" class="help-text">Plain text or invalid JSON</small>
+    </div>
+
+    <div *ngIf="isValidJson && parsedJson" class="json-preview">
+      <h3>JSON Preview</h3>
+      <div class="json-viewer-wrapper">
+        <ngx-json-viewer [json]="parsedJson" [expanded]="true"></ngx-json-viewer>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-primary" (click)="save()" [disabled]="loading">
+        <span class="icon">💾</span> {{ isEditMode ? 'Update' : 'Create' }}
+      </button>
+      <button class="btn btn-secondary" (click)="cancel()" [disabled]="loading">
+        <span class="icon">✕</span> Cancel
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="config-list-container">
+  <div class="header">
+    <h1>Azure App Configuration</h1>
+    <div class="actions">
+      <button class="btn btn-primary" (click)="createNew()">
+        <span class="icon">+</span> Create New
+      </button>
+      <button class="btn btn-secondary" (click)="refresh()">
+        <span class="icon">↻</span> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Loading configurations...
+  </div>
+
+  <div *ngIf="!loading && !error && configurations.length === 0" class="empty-state">
+    <p>No configurations found. Click "Create New" to add your first configuration.</p>
+  </div>
+
+  <div *ngIf="!loading && configurations.length > 0" class="config-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+          <th>Label</th>
+          <th>Content Type</th>
+          <th>Last Modified</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let config of configurations" (click)="viewConfig(config)" class="config-row">
+          <td class="key-cell">{{ config.key }}</td>
+          <td class="value-cell">
+            <span class="value-preview">{{ config.value | slice:0:50 }}{{ config.value.length > 50 ? '...' : '' }}</span>
+          </td>
+          <td>{{ config.label || '-' }}</td>
+          <td>{{ config.contentType || '-' }}</td>
+          <td>{{ config.lastModified | date:'short' }}</td>
+          <td class="actions-cell">
+            <button class="btn btn-sm btn-danger" (click)="deleteConfig(config, $event)" title="Delete">
+              <span class="icon">🗑</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
