@@ -16,7 +16,6 @@ export interface ConfigItem {
 })
 export class AzureAppConfigService {
   private client: AppConfigurationClient | null = null;
-  private connectionString: string = '';
 
   constructor() { }
 
@@ -26,7 +25,6 @@ export class AzureAppConfigService {
    */
   initialize(connectionString: string): void {
     try {
-      this.connectionString = connectionString;
       this.client = new AppConfigurationClient(connectionString);
     } catch (error) {
       console.error('Failed to initialize Azure App Configuration client:', error);

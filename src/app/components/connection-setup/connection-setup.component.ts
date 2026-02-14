@@ -47,9 +47,4 @@ export class ConnectionSetupComponent {
       this.error = 'Failed to connect: ' + (err.message || 'Invalid connection string');
     }
   }
-
-  useDemo(): void {
-    // For demo purposes, show a message
-    this.error = 'Demo mode: Please enter your Azure App Configuration connection string to proceed.';
-  }
 }
