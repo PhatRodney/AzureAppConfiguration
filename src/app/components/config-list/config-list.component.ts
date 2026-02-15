@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AzureAppConfigService, ConfigItem } from '../../services/azure-app-config.service';
 
 @Component({
   selector: 'app-config-list',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './config-list.component.html',
   styleUrl: './config-list.component.less'
 })
 export class ConfigListComponent implements OnInit {
   configurations: ConfigItem[] = [];
+  filteredConfigurations: ConfigItem[] = [];
+  filterText: string = '';
   loading = false;
   error: string | null = null;
 
@@ -35,6 +38,7 @@ export class ConfigListComponent implements OnInit {
     this.azureConfigService.listConfigurations().subscribe({
       next: (configs) => {
         this.configurations = configs;
+        this.applyFilter();
         this.loading = false;
       },
       error: (err) => {
@@ -42,6 +46,51 @@ export class ConfigListComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  /**
+   * Apply filter to configurations based on filterText with wildcard support
+   * Supports * as wildcard (e.g., "CwmWebApi:*" matches keys starting with "CwmWebApi:")
+   */
+  applyFilter(): void {
+    if (!this.filterText || this.filterText.trim() === '') {
+      this.filteredConfigurations = this.configurations;
+      return;
+    }
+
+    const pattern = this.filterText.trim();
+    const regex = this.createWildcardRegex(pattern);
+    
+    this.filteredConfigurations = this.configurations.filter(config => 
+      regex.test(config.key)
+    );
+  }
+
+  /**
+   * Convert wildcard pattern to regex
+   * * matches any characters (including none)
+   */
+  private createWildcardRegex(pattern: string): RegExp {
+    // Escape special regex characters except *
+    const escapedPattern = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+    // Replace * with .* for regex
+    const regexPattern = '^' + escapedPattern.replace(/\*/g, '.*') + '$';
+    return new RegExp(regexPattern, 'i'); // case insensitive
+  }
+
+  /**
+   * Called when filter input changes
+   */
+  onFilterChange(): void {
+    this.applyFilter();
+  }
+
+  /**
+   * Clear the filter
+   */
+  clearFilter(): void {
+    this.filterText = '';
+    this.applyFilter();
   }
 
   viewConfig(config: ConfigItem): void {

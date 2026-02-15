@@ -24,7 +24,30 @@
   </div>
 
   <div *ngIf="!loading && configurations.length > 0" class="config-table">
-    <table>
+    <div class="filter-container">
+      <input 
+        type="text" 
+        class="filter-input" 
+        [(ngModel)]="filterText" 
+        (ngModelChange)="onFilterChange()"
+        placeholder="Filter by key (supports * wildcard, e.g., CwmWebApi:*)"
+        [title]="'Filter by key. Use * as wildcard. Example: CwmWebApi:* shows keys starting with CwmWebApi:'"
+      />
+      <button 
+        class="btn btn-secondary btn-sm clear-filter-btn" 
+        (click)="clearFilter()"
+        *ngIf="filterText"
+        title="Clear filter"
+      >
+        Clear
+      </button>
+    </div>
+    
+    <div *ngIf="filteredConfigurations.length === 0" class="no-results">
+      <p>No configurations match the filter "{{ filterText }}"</p>
+    </div>
+    
+    <table *ngIf="filteredConfigurations.length > 0">
       <thead>
         <tr>
           <th>Key</th>
@@ -36,7 +59,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let config of configurations" (click)="viewConfig(config)" class="config-row">
+        <tr *ngFor="let config of filteredConfigurations" (click)="viewConfig(config)" class="config-row">
           <td class="key-cell">{{ config.key }}</td>
           <td class="value-cell">
             <span class="value-preview">{{ config.value | slice:0:50 }}{{ config.value.length > 50 ? '...' : '' }}</span>
