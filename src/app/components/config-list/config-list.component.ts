@@ -46,6 +46,7 @@ export class ConfigListComponent implements OnInit {
 
   viewConfig(config: ConfigItem): void {
     this.router.navigate(['/edit', config.key], { 
+      queryParams: { label: config.label || '' },
       state: { config } 
     });
   }
