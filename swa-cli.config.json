@@ -1,0 +1,27 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "azure-app-configuration": {
+      "env": "Production",
+      "deploymentEnvironment": "Production",
+      "deploymentToken": "e9726356fabe589559119a17aec286dcb17ba5760031c3495a3c61e8994f68b202-9460f2b2-14af-4dd9-978f-d2693636f78a01e1723026c87b1e",
+      "tenantId": "445012c4-563a-4795-84d0-f7473a3197e0",
+      "subscriptionId": "cd797f46-c7dc-48b1-88ef-5dc946e8431a",
+      "resourceGroup": "cheap-weed-menus-resource-group",
+      "appName": "AppConfig",
+      "appLocation": "./",
+      "appBuildCommand": "npm run build",
+      "appDevserverUrl": "http://localhost:4200",
+      "run": "npm start",
+      "swaConfigLocation": "./staticwebapp.config.json",
+      "outputLocation": "dist/azure-app-configuration",
+      "verbose": "silly",
+      "start": {
+        "outputLocation": "dist/azure-app-configuration"
+      },
+      "deploy": {
+        "outputLocation": "dist/azure-app-configuration"
+      }
+    }
+  }
+}

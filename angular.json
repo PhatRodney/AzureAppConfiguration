@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "AppConfig": {
+    "azure-app-configuration": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/app-config",
+            "outputPath": "dist/azure-app-configuration",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "AppConfig:build:production"
+              "buildTarget": "azure-app-configuration:build:production"
             },
             "development": {
-              "buildTarget": "AppConfig:build:development"
+              "buildTarget": "azure-app-configuration:build:development"
             }
           },
           "defaultConfiguration": "development"
