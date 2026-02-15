@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { AzureAppConfigService, ConfigItem } from '../../services/azure-app-config.service';
+import { ConfigStateService } from '../../services/config-state.service';
 
 @Component({
   selector: 'app-config-editor',
@@ -28,6 +29,7 @@ export class ConfigEditorComponent implements OnInit {
 
   constructor(
     private azureConfigService: AzureAppConfigService,
+    private configStateService: ConfigStateService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -43,6 +45,21 @@ export class ConfigEditorComponent implements OnInit {
       this.loadConfiguration(key, label !== null ? label : undefined);
     } else {
       this.isEditMode = false;
+      // Auto-fill with previous values when creating new config
+      this.autoFillPreviousValues();
+    }
+  }
+
+  /**
+   * Auto-fill form fields with previously added values
+   */
+  private autoFillPreviousValues(): void {
+    const lastAdded = this.configStateService.getLastAdded();
+    if (lastAdded.key || lastAdded.label || lastAdded.value) {
+      this.configKey = lastAdded.key;
+      this.configLabel = lastAdded.label;
+      this.configValue = lastAdded.value;
+      this.tryParseJson();
     }
   }
 
@@ -116,6 +133,15 @@ export class ConfigEditorComponent implements OnInit {
         if (config) {
           this.success = this.isEditMode ? 'Configuration updated successfully' : 'Configuration created successfully';
           this.loading = false;
+          
+          // Save values for auto-fill when creating new configs
+          if (!this.isEditMode) {
+            this.configStateService.saveLastAdded(
+              this.configKey,
+              this.configLabel,
+              this.configValue
+            );
+          }
           
           // Navigate back to list after 1.5 seconds
           setTimeout(() => {

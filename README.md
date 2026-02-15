@@ -74,6 +74,11 @@ Navigate to `http://localhost:4200/` in your browser.
 3. Click "Connect"
 4. You'll be redirected to the main configuration list
 
+**Auto-Connection**: The application supports automatic connection via environment-like configuration:
+- Set `AZURE_APP_CONFIG_CONNECTION_STRING` in localStorage to auto-connect on startup
+- Example: `localStorage.setItem('AZURE_APP_CONFIG_CONNECTION_STRING', 'your-connection-string')`
+- This is useful for automated deployments or testing environments
+
 **Security Note**: Connection strings are stored only in memory for the current session. They are not persisted to disk or browser storage for security reasons.
 
 ### Managing Configurations
@@ -90,9 +95,10 @@ Navigate to `http://localhost:4200/` in your browser.
    - **Label** (optional): Use for environment-specific configs (e.g., "Production", "Development")
    - **Content Type** (optional): Specify the content type (e.g., "application/json")
    - **Value** (required): The configuration value
-3. If entering JSON, the editor will validate and show a preview
-4. Use "Format JSON" button to auto-format JSON values
-5. Click "Create" to save
+3. **Auto-Fill Feature**: When creating multiple configurations, the form automatically pre-fills with values from your last created configuration to speed up data entry
+4. If entering JSON, the editor will validate and show a preview
+5. Use "Format JSON" button to auto-format JSON values
+6. Click "Create" to save
 
 #### Editing a Configuration
 1. Click on a configuration row in the list

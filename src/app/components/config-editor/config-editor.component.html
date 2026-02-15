@@ -1,6 +1,9 @@
 <div class="config-editor-container">
   <div class="header">
     <h1>{{ isEditMode ? 'Edit Configuration' : 'Create Configuration' }}</h1>
+    <p *ngIf="!isEditMode" class="auto-fill-hint">
+      💡 Fields are auto-filled with values from your last add
+    </p>
   </div>
 
   <div *ngIf="error" class="error-message">

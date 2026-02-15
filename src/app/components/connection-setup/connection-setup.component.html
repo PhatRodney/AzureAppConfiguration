@@ -5,6 +5,10 @@
       <p>Connect to your Azure App Configuration service</p>
     </div>
 
+    <div *ngIf="autoConnecting" class="info-message">
+      Found connection string in environment. Connecting...
+    </div>
+
     <div *ngIf="error" class="error-message">
       {{ error }}
     </div>
@@ -30,7 +34,8 @@
         </button>
       </div>
       <small class="help-text">
-        Get your connection string from Azure Portal → App Configuration → Access Keys
+        Get your connection string from Azure Portal → App Configuration → Access Keys<br/>
+        <strong>Tip:</strong> You can also set 'AZURE_APP_CONFIG_CONNECTION_STRING' in localStorage to auto-connect.
       </small>
     </div>
 
